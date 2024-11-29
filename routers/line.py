@@ -13,7 +13,7 @@ from starlette.exceptions import HTTPException
 
 from linebot.v3.exceptions import InvalidSignatureError
 from linebot.v3.messaging import (
-    Configuration,
+    # access_token,
     ApiClient,
     MessagingApi,
     ReplyMessageRequest,
@@ -24,13 +24,15 @@ from linebot.v3.webhooks import (
     TextMessageContent
 
 )
+from starlette.exceptions import HTTPException
 
 
 #ここまで
 load_dotenv()
-router = APIRouter()
 
+router = APIRouter()
 handler = WebhookHandler(os.environ.get('CHANNEL_SECRET'))
+access_token = os.environ.get('CHANNEL_ACCESS_TOKEN')
 
 @router.post(
     '/api/callback',
@@ -54,7 +56,7 @@ async def callback(request: Request, x_line_signature=Header(None)):
 #エンドポイントの追加
 @handler.add(MessageEvent, message=TextMessageContent)
 def handle_message(event: MessageEvent):
-    with ApiClient(configuration) as api_client:
+    with ApiClient(access_token) as api_client:
         line_bot_api = MessagingApi(api_client)
         line_bot_api.reply_message_with_http_info(
             ReplyMessageRequest(
