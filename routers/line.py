@@ -24,6 +24,9 @@ from linebot.v3.webhooks import (
     TextMessageContent
 
 )
+#エンドポイント作成のための新規ライブラリ
+from linebot.models import MessageEvent, TextMessage, TextSendMessage
+
 from starlette.exceptions import HTTPException
 
 
@@ -64,7 +67,12 @@ def handle_message(event: MessageEvent):
                 messages=[TextMessage(text=event.message.text)]
             )
         )
-@hadler.add(MessageEvent)
-def return_message(event:MessageEvent):
-    rerturn 
-    {"message":"messageを受け取ったよ"}
+# # @handler.add(MessageEvent,message=TextMessage)#handler.ってなに？addって一般的なもの？
+# def handle_message(event:MessageEvent): #eventだけじゃだめ?messageeventってなに？
+#     print("event.message.text:{}".format(event.message.text))
+#     with ApiClient(access_token) as api_client:
+#         line_bot_api = MessagingApi(api_client)
+#         line_bot_api.reply_message(
+#                 event.reply_token,
+#                 TextSendMessage(text=event.message.text),
+#             )
