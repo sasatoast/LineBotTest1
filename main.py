@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 # 追加
 # lineファイルをインポート
-from routers.line import line
+import os
+from api.routers import line
 
 app = FastAPI()
 
@@ -11,4 +12,6 @@ app.include_router(line.router)
 
 @app.get("/hello")
 async def hello():
+    print(f"CHANNEL_SECRET: {os.environ.get('CHANNEL_SECRET')}")
+
     return {"message": "hello world!"}
