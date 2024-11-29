@@ -64,3 +64,7 @@ def handle_message(event: MessageEvent):
                 messages=[TextMessage(text=event.message.text)]
             )
         )
+@hadler.add(MessageEvent)
+def return_message(event:MessageEvent):
+    rerturn 
+    {"message":"messageを受け取ったよ"}
