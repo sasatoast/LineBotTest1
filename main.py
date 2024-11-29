@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 # 追加
 # lineファイルをインポート
-from .routers import line
+from routers.line import line
 
 app = FastAPI()
 
