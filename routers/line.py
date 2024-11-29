@@ -9,6 +9,24 @@ from linebot.v3 import WebhookHandler
 from linebot.v3.exceptions import InvalidSignatureError
 from starlette.exceptions import HTTPException
 
+#新たな変数の宣言とライブラリの追加
+
+from linebot.v3.exceptions import InvalidSignatureError
+from linebot.v3.messaging import (
+    Configuration,
+    ApiClient,
+    MessagingApi,
+    ReplyMessageRequest,
+    TextMessage
+)
+from linebot.v3.webhooks import (
+    MessageEvent,
+    TextMessageContent
+
+)
+
+
+#ここまで
 load_dotenv()
 router = APIRouter()
 
@@ -32,3 +50,15 @@ async def callback(request: Request, x_line_signature=Header(None)):
         raise HTTPException(status_code=400, detail="InvalidSignatureError")
 
     return "OK"
+
+#エンドポイントの追加
+@handler.add(MessageEvent, message=TextMessageContent)
+def handle_message(event: MessageEvent):
+    with ApiClient(configuration) as api_client:
+        line_bot_api = MessagingApi(api_client)
+        line_bot_api.reply_message_with_http_info(
+            ReplyMessageRequest(
+                reply_token=event.reply_token,
+                messages=[TextMessage(text=event.message.text)]
+            )
+        )
